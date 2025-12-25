@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+using namespace std;
 
 int main() {
     std::cout << "=== Electric Motor Control and Simulation ===" << std::endl;
