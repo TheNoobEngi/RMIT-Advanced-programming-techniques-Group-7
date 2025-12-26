@@ -32,11 +32,10 @@ const std::string SHORT_DIRS[] = {"N", "S", "E", "W"};
 std::string getCurrentTimestamp() {
     auto now = std::chrono::system_clock::now();
     auto time = std::chrono::system_clock::to_time_t(now);
-    std::tm tm_buf;
-    localtime_s(&tm_buf, &time);
+    std::tm* tm_ptr = std::localtime(&time);
     
     std::ostringstream oss;
-    oss << std::put_time(&tm_buf, "%H:%M:%S");
+    oss << std::put_time(tm_ptr, "%H:%M:%S");
     return oss.str();
 }
 
