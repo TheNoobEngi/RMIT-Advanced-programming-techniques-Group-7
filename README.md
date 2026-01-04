@@ -15,17 +15,33 @@ This group project integrates two C++ simulation modules demonstrating object-or
 ## Project Structure
 
 ```
-├── PartA/                    # Traffic Light Management System
+├── PartA/                       # Traffic Light Management System
+│   ├── include/
+│   │   ├── Utils.h              # Shared utilities & constants
+│   │   ├── TrafficLight.h       # Traffic light class
+│   │   ├── Intersection.h       # Intersection with 4 lights
+│   │   ├── User.h               # Abstract base user class
+│   │   ├── Operator.h           # Operator role
+│   │   ├── Admin.h              # Admin role
+│   │   ├── Logger.h             # Activity logging
+│   │   └── FileManager.h        # Data persistence
 │   ├── src/
-│   │   └── main.cpp          # Main source code
-│   ├── include/              # Header files
-│   └── data/                 # Data persistence files
+│   │   ├── main.cpp             # Entry point
+│   │   ├── Utils.cpp
+│   │   ├── TrafficLight.cpp
+│   │   ├── Intersection.cpp
+│   │   ├── User.cpp
+│   │   ├── Operator.cpp
+│   │   ├── Admin.cpp
+│   │   ├── Logger.cpp
+│   │   └── FileManager.cpp
+│   └── data/                    # CSV files & logs
 │
-├── PartB/                    # Electric Motor Control and Simulation
+├── PartB/                       # Electric Motor Control
+│   ├── include/
 │   ├── src/
-│   │   └── main.cpp          # Main source code
-│   ├── include/              # Header files
-│   └── data/                 # Data persistence files
+│   │   └── main.cpp
+│   └── data/
 │
 └── README.md
 ```
@@ -82,7 +98,10 @@ A console-based program that interacts with a motor simulator (ousbMotorSim.exe)
 ## How to Compile
 
 ```bash
-g++ -o traffic.exe PartA/src/main.cpp
+# Part A 
+g++ -o traffic.exe -IPartA/include PartA/src/*.cpp
+
+# Part B
 g++ -o motor.exe PartB/src/main.cpp
 ```
 
