@@ -81,8 +81,8 @@ A console-based program that interacts with a motor simulator (ousbMotorSim.exe)
 ### Team Responsibilities
 | Member | Focus Areas |
 |--------|-------------|
-| Member 3 | PWM Control, Feedback Control Loop |
-| Member 4 | ADC Feedback Reading, Data Logging & Exception Handling |
+| Nguyen Duc Khoi | PWM Control, Feedback Control Loop |
+| John Falconer | ADC Feedback Reading, Data Logging & Exception Handling |
 
 ---
 
