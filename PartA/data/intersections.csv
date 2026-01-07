@@ -1,0 +1,4 @@
+id,name,green,yellow,red,operator
+INT001,Nguyen Van Linh,30,5,25,OP002
+INT002,District 7 Junction,25,5,20,OP001
+INT003,Le Loi Street,30,3,25,OP003

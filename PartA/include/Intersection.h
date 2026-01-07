@@ -55,6 +55,7 @@ public:
     void toggleMode();
     void setAutoMode(bool mode);
     void manualOverride(int direction);
+    void resetTimer();
     
     // Display
     void displayStatus() const;

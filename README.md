@@ -98,11 +98,17 @@ A console-based program that interacts with a motor simulator (ousbMotorSim.exe)
 ## How to Compile
 
 ```bash
-# Part A 
-g++ -o traffic.exe -IPartA/include PartA/src/*.cpp
+# Part A - compile and output to PartA folder
+g++ -o PartA/traffic.exe -IPartA/include PartA/src/*.cpp
 
 # Part B
-g++ -o motor.exe PartB/src/main.cpp
+g++ -o PartB/motor.exe PartB/src/main.cpp
+```
+
+To run Part A:
+```bash
+cd PartA
+./traffic.exe
 ```
 
 ---

@@ -14,6 +14,7 @@ User::User(const std::string& id, const std::string& uname, const std::string& p
 
 std::string User::getId() const { return id; }
 std::string User::getUsername() const { return username; }
+std::string User::getPassword() const { return password; }
 
 bool User::authenticate(const std::string& pwd) const {
     return password == pwd;

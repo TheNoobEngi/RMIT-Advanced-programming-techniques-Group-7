@@ -113,6 +113,12 @@ void Intersection::setAutoMode(bool mode) {
     autoMode = mode;
 }
 
+// Reset timer to green duration
+void Intersection::resetTimer() {
+    countdown = greenDuration;
+    std::cout << "Timer reset to " << greenDuration << " seconds.\n";
+}
+
 // MANUAL OVERRIDE
 // Allows operator to set any direction to GREEN
 void Intersection::manualOverride(int direction) {
@@ -155,13 +161,19 @@ void Intersection::displayStatus() const {
         std::cout << "  " << std::setw(6) << lights[i].getDirection() << ": "
                   << std::setw(6) << lights[i].getStateString();
         if (lights[i].getState() == LightState::GREEN) {
-            std::cout << " (" << countdown << "s)";
+            if (autoMode) {
+                std::cout << " (" << countdown << "s)";
+            } else {
+                std::cout << " (" << countdown << "s, paused)";
+            }
         }
         std::cout << "\n";
     }
     
     if (autoMode && currentPhase == LightState::GREEN) {
         std::cout << "\nNext change in " << countdown << " seconds...\n";
+    } else if (!autoMode) {
+        std::cout << "\n[MANUAL MODE] Timer paused. Use override to change lights.\n";
     }
 }
 

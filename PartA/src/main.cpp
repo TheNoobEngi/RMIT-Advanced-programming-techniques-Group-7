@@ -15,25 +15,42 @@
 #include "FileManager.h"
 
 int main() {
+    std::cout << "========================================\n";
+    std::cout << "   TRAFFIC LIGHT MANAGEMENT SYSTEM\n";
+    std::cout << "        Smart City Systems\n";
+    std::cout << "========================================\n\n";
+    
     // Initialize file manager and load data
     FileManager fileManager;
     std::vector<Intersection> intersections = fileManager.loadIntersections();
     
-    // Create sample users (Member 1 should load from file)
+    // Create user vectors
     std::vector<Admin> admins;
     std::vector<Operator> operators;
     
-    // Default admin and operator for testing
-    admins.emplace_back("ADM001", "admin", "admin123");
-    operators.emplace_back("OP001", "operator1", "op123");
+    // Try to load users from file
+    fileManager.loadUsers(admins, operators);
     
-    // If no intersections exist, create sample ones
+    // If no users loaded, create defaults
+    if (admins.empty()) {
+        admins.emplace_back("ADM001", "admin", "admin123");
+        std::cout << "Created default admin (username: admin, password: admin123)\n";
+    }
+    if (operators.empty()) {
+        operators.emplace_back("OP001", "operator1", "op123");
+        std::cout << "Created default operator (username: operator1, password: op123)\n";
+    }
+    
+    // If no intersections exist, create samples
     if (intersections.empty()) {
         intersections.emplace_back("INT001", "Nguyen Van Linh", 30, 5, 25);
         intersections.emplace_back("INT002", "District 7 Junction", 25, 5, 20);
         operators[0].addAssignedIntersection("INT001");
         operators[0].addAssignedIntersection("INT002");
+        std::cout << "Created 2 sample intersections.\n";
     }
+    
+    std::cout << "\n";
     
     // Main program loop
     bool running = true;
@@ -47,18 +64,71 @@ int main() {
         
         std::cout << "1. Login as Admin\n";
         std::cout << "2. Login as Operator\n";
-        std::cout << "3. Exit\n";
+        std::cout << "3. Create New Account\n";
+        std::cout << "4. Exit\n";
         std::cout << "\nChoice: ";
         
         int choice;
         std::cin >> choice;
         
-        if (choice == 3) {
-            // Save data before exit
+        if (choice == 4) {
+            // Save all data before exit
+            std::cout << "\nSaving data...\n";
             fileManager.saveIntersections(intersections);
+            fileManager.saveUsers(admins, operators);
             std::cout << "\nGoodbye!\n";
             running = false;
             break;
+        }
+        
+        if (choice == 3) {
+            // Create new account
+            std::cout << "\n===== CREATE NEW ACCOUNT =====\n";
+            std::cout << "1. Admin Account\n";
+            std::cout << "2. Operator Account\n";
+            std::cout << "3. Cancel\n";
+            std::cout << "Choice: ";
+            
+            int accountType;
+            std::cin >> accountType;
+            
+            if (accountType == 3) continue;
+            
+            std::string id, username, password;
+            
+            if (accountType == 1) {
+                // Auto-generate Admin ID
+                int nextId = admins.size() + 1;
+                id = "ADM" + std::string(3 - std::to_string(nextId).length(), '0') + std::to_string(nextId);
+                
+                std::cout << "\nEnter Username: ";
+                std::cin >> username;
+                std::cout << "Enter Password: ";
+                std::cin >> password;
+                
+                admins.emplace_back(id, username, password);
+                std::cout << "\nAdmin account created!\n";
+                std::cout << "Your ID: " << id << "\n";
+                std::cout << "Username: " << username << "\n";
+                pauseScreen();
+            }
+            else if (accountType == 2) {
+                // Auto-generate Operator ID
+                int nextId = operators.size() + 1;
+                id = "OP" + std::string(3 - std::to_string(nextId).length(), '0') + std::to_string(nextId);
+                
+                std::cout << "\nEnter Username: ";
+                std::cin >> username;
+                std::cout << "Enter Password: ";
+                std::cin >> password;
+                
+                operators.emplace_back(id, username, password);
+                std::cout << "\nOperator account created!\n";
+                std::cout << "Your ID: " << id << "\n";
+                std::cout << "Username: " << username << "\n";
+                pauseScreen();
+            }
+            continue;
         }
         
         std::string username, password;
@@ -98,30 +168,12 @@ int main() {
                 
                 switch (adminChoice) {
                     case 1:
-                        currentAdmin->addIntersection(intersections);
-                        pauseScreen();
+                        currentAdmin->manageIntersections(intersections, operators);
                         break;
                     case 2:
-                        currentAdmin->removeIntersection(intersections);
-                        pauseScreen();
+                        currentAdmin->viewAllLogs();
                         break;
                     case 3:
-                        currentAdmin->configureIntersection(intersections);
-                        pauseScreen();
-                        break;
-                    case 4:
-                        currentAdmin->assignOperatorToIntersection(intersections, operators);
-                        pauseScreen();
-                        break;
-                    case 5:
-                        currentAdmin->viewAllLogs();
-                        pauseScreen();
-                        break;
-                    case 6:
-                        currentAdmin->listIntersections(intersections);
-                        pauseScreen();
-                        break;
-                    case 7:
                         adminLoggedIn = false;
                         break;
                     default:
@@ -160,11 +212,14 @@ int main() {
                 std::cin >> opChoice;
                 
                 switch (opChoice) {
-                    case 1:
-                        currentOperator->viewAssignedIntersections(intersections);
-                        pauseScreen();
-                        break;
-                    case 2: {
+                    case 1: {
+                        // Show available intersections first
+                        std::cout << "\n=== Your Assigned Intersections ===\n";
+                        for (const auto& intersection : intersections) {
+                            if (currentOperator->isAssignedTo(intersection.getId())) {
+                                std::cout << "  " << intersection.getId() << " - " << intersection.getName() << "\n";
+                            }
+                        }
                         std::cout << "\nEnter Intersection ID to monitor: ";
                         std::string intId;
                         std::cin >> intId;
@@ -184,37 +239,7 @@ int main() {
                         }
                         break;
                     }
-                    case 3: {
-                        std::cout << "\nEnter Intersection ID: ";
-                        std::string intId;
-                        std::cin >> intId;
-                        
-                        for (auto& intersection : intersections) {
-                            if (intersection.getId() == intId && 
-                                currentOperator->isAssignedTo(intId)) {
-                                currentOperator->switchMode(intersection);
-                                break;
-                            }
-                        }
-                        pauseScreen();
-                        break;
-                    }
-                    case 4: {
-                        std::cout << "\nEnter Intersection ID: ";
-                        std::string intId;
-                        std::cin >> intId;
-                        
-                        for (auto& intersection : intersections) {
-                            if (intersection.getId() == intId && 
-                                currentOperator->isAssignedTo(intId)) {
-                                currentOperator->performOverride(intersection);
-                                break;
-                            }
-                        }
-                        pauseScreen();
-                        break;
-                    }
-                    case 5:
+                    case 2:
                         operatorLoggedIn = false;
                         break;
                     default:
@@ -226,4 +251,4 @@ int main() {
     }
     
     return 0;
-} 
+}

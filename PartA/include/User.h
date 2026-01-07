@@ -29,6 +29,7 @@ public:
     // Common methods
     std::string getId() const;
     std::string getUsername() const;
+    std::string getPassword() const;
     bool authenticate(const std::string& pwd) const;
     
     void setId(const std::string& newId);

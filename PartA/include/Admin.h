@@ -2,7 +2,7 @@
  * Admin.h - Admin class header
  * Part A: Traffic Light Management System
  * 
- * [MEMBER 1 TODO] - Implement Admin functionality
+ * Demonstrates: INHERITANCE from User, POLYMORPHISM via virtual methods
  */
 
 #ifndef ADMIN_H
@@ -22,9 +22,13 @@ public:
     std::string getRole() const override;
     void displayMenu() override;
     
-    // TODO: Implement all admin functions
+    // Admin functionality
+    void manageIntersections(std::vector<Intersection>& intersections,
+                              std::vector<Operator>& operators);
     void addIntersection(std::vector<Intersection>& intersections);
     void removeIntersection(std::vector<Intersection>& intersections);
+    void viewAndEditIntersection(std::vector<Intersection>& intersections,
+                                  std::vector<Operator>& operators);
     void configureIntersection(std::vector<Intersection>& intersections);
     void assignOperatorToIntersection(std::vector<Intersection>& intersections,
                                       std::vector<Operator>& operators);

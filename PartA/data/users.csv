@@ -1,0 +1,6 @@
+id,username,password,role,assigned_intersections
+ADM001,admin,admin123,ADMIN,
+ADM002,minAd,123,ADMIN,
+OP001,operator1,op123,OPERATOR,INT002
+OP002,op,123,OPERATOR,INT001
+OP003,new,new,OPERATOR,INT003

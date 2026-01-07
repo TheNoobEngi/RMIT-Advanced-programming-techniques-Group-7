@@ -1,8 +1,6 @@
 /*
  * Admin.cpp - Admin class implementation
  * Part A: Traffic Light Management System
- * 
- * [MEMBER 1 TODO] - Implement all admin functionality
  */
 
 #include "Admin.h"
@@ -19,44 +17,256 @@ std::string Admin::getRole() const {
 }
 
 void Admin::displayMenu() {
-    std::cout << "\n=== Admin Menu ===\n";
-    std::cout << "1. Add Intersection\n";
-    std::cout << "2. Remove Intersection\n";
-    std::cout << "3. Configure Intersection Timing\n";
-    std::cout << "4. Assign Operator to Intersection\n";
-    std::cout << "5. View All Activity Logs\n";
-    std::cout << "6. List All Intersections\n";
-    std::cout << "7. Logout\n";
+    std::cout << "\n============ ADMIN MENU ============\n";
+    std::cout << "1. View All Intersections\n";
+    std::cout << "2. View Activity Logs\n";
+    std::cout << "3. Logout\n";
+    std::cout << "====================================\n";
     std::cout << "Choice: ";
 }
 
-// TODO: Add new intersection
+void Admin::manageIntersections(std::vector<Intersection>& intersections,
+                                 std::vector<Operator>& operators) {
+    bool managing = true;
+    
+    while (managing) {
+        clearScreen();
+        std::cout << "================= ALL INTERSECTIONS =================\n";
+        
+        if (intersections.empty()) {
+            std::cout << "\nNo intersections configured.\n";
+        } else {
+            std::cout << std::setw(8) << "ID" << " | "
+                      << std::setw(22) << "Name" << " | "
+                      << std::setw(4) << "G" << " | "
+                      << std::setw(4) << "Y" << " | "
+                      << "Operator\n";
+            std::cout << std::string(60, '-') << "\n";
+            
+            for (const auto& i : intersections) {
+                std::cout << std::setw(8) << i.getId() << " | "
+                          << std::setw(22) << i.getName() << " | "
+                          << std::setw(4) << i.getGreenDuration() << " | "
+                          << std::setw(4) << i.getYellowDuration() << " | "
+                          << (i.getAssignedOperator().empty() ? "None" : i.getAssignedOperator())
+                          << "\n";
+            }
+            std::cout << std::string(60, '=') << "\n";
+        }
+        
+        std::cout << "\n[A] Add Intersection  [Q] Back to Menu\n";
+        std::cout << "Or enter Intersection ID to edit/remove: ";
+        
+        std::string input;
+        std::cin >> input;
+        
+        if (input == "q" || input == "Q") {
+            managing = false;
+            continue;
+        }
+        
+        if (input == "a" || input == "A") {
+            // Add new intersection
+            addIntersection(intersections);
+            pauseScreen();
+            continue;
+        }
+        
+        // Try to find intersection by ID
+        Intersection* target = nullptr;
+        for (auto& intersection : intersections) {
+            if (intersection.getId() == input) {
+                target = &intersection;
+                break;
+            }
+        }
+        
+        if (!target) {
+            std::cout << "Intersection '" << input << "' not found.\n";
+            pauseScreen();
+            continue;
+        }
+        
+        // Show intersection details and options
+        std::cout << "\n--- " << target->getName() << " (" << target->getId() << ") ---\n";
+        std::cout << "Timings: Green=" << target->getGreenDuration() 
+                  << "s, Yellow=" << target->getYellowDuration() << "s\n";
+        std::cout << "Operator: " << (target->getAssignedOperator().empty() ? "None" : target->getAssignedOperator()) << "\n";
+        
+        std::cout << "\n1. Edit Timings\n";
+        if (target->getAssignedOperator().empty()) {
+            std::cout << "2. Assign Operator\n";
+        } else {
+            std::cout << "2. Remove Operator\n";
+        }
+        std::cout << "3. Delete Intersection\n";
+        std::cout << "4. Cancel\n";
+        std::cout << "Choice: ";
+        
+        int choice;
+        std::cin >> choice;
+        
+        switch (choice) {
+            case 1: {
+                // Edit timings
+                int green, yellow;
+                std::cout << "\nEnter new Green duration (seconds): ";
+                std::cin >> green;
+                std::cout << "Enter new Yellow duration (seconds): ";
+                std::cin >> yellow;
+                
+                if (green > 0 && yellow > 0) {
+                    int red = 3 * (green + yellow);
+                    target->setDurations(green, yellow, red);
+                    std::cout << "Success! Timings updated.\n";
+                } else {
+                    std::cout << "Error: Durations must be positive.\n";
+                }
+                pauseScreen();
+                break;
+            }
+            case 2: {
+                if (target->getAssignedOperator().empty()) {
+                    // Assign operator
+                    if (operators.empty()) {
+                        std::cout << "No operators available.\n";
+                    } else {
+                        std::cout << "\nAvailable Operators:\n";
+                        for (const auto& op : operators) {
+                            std::cout << "  " << op.getId() << " - " << op.getUsername() << "\n";
+                        }
+                        
+                        std::string opId;
+                        std::cout << "\nEnter Operator ID (or 'q' to cancel): ";
+                        std::cin >> opId;
+                        
+                        if (opId == "q" || opId == "Q") {
+                            std::cout << "Cancelled.\n";
+                            break;
+                        }
+                        
+                        Operator* targetOp = nullptr;
+                        for (auto& op : operators) {
+                            if (op.getId() == opId) {
+                                targetOp = &op;
+                                break;
+                            }
+                        }
+                        
+                        if (targetOp) {
+                            target->assignOperator(opId);
+                            targetOp->addAssignedIntersection(target->getId());
+                            std::cout << "Success! Operator assigned.\n";
+                        } else {
+                            std::cout << "Operator not found.\n";
+                        }
+                    }
+                } else {
+                    // Remove operator
+                    target->assignOperator("");
+                    std::cout << "Operator removed.\n";
+                }
+                pauseScreen();
+                break;
+            }
+            case 3: {
+                // Delete intersection
+                std::cout << "\nAre you sure you want to delete '" << target->getName() << "'? (y/n): ";
+                char confirm;
+                std::cin >> confirm;
+                
+                if (confirm == 'y' || confirm == 'Y') {
+                    std::string name = target->getName();
+                    for (auto it = intersections.begin(); it != intersections.end(); ++it) {
+                        if (it->getId() == target->getId()) {
+                            intersections.erase(it);
+                            break;
+                        }
+                    }
+                    std::cout << "Deleted '" << name << "'.\n";
+                }
+                pauseScreen();
+                break;
+            }
+            case 4:
+            default:
+                break;
+        }
+    }
+}
+
 void Admin::addIntersection(std::vector<Intersection>& intersections) {
-    // TODO: Implement add intersection
+    std::string id, name;
+    int green, yellow;
+    
+    std::cout << "\n===== ADD NEW INTERSECTION =====\n";
+    std::cout << "(Enter 'q' at any prompt to cancel)\n\n";
+    
+    std::cout << "Enter Intersection ID (e.g., INT003): ";
+    std::cin >> id;
+    if (id == "q" || id == "Q") {
+        std::cout << "Cancelled.\n";
+        return;
+    }
+    
+    for (const auto& i : intersections) {
+        if (i.getId() == id) {
+            std::cout << "Error: ID '" << id << "' already exists!\n";
+            return;
+        }
+    }
+    
+    std::cin.ignore();
+    std::cout << "Enter Name (or 'q' to cancel): ";
+    std::getline(std::cin, name);
+    if (name == "q" || name == "Q") {
+        std::cout << "Cancelled.\n";
+        return;
+    }
+    
+    std::cout << "Green duration (seconds, default 30, or -1 to cancel): ";
+    std::cin >> green;
+    if (green == -1) {
+        std::cout << "Cancelled.\n";
+        return;
+    }
+    if (green <= 0) green = 30;
+    
+    std::cout << "Yellow duration (seconds, default 5, or -1 to cancel): ";
+    std::cin >> yellow;
+    if (yellow == -1) {
+        std::cout << "Cancelled.\n";
+        return;
+    }
+    if (yellow <= 0) yellow = 5;
+    
+    int red = 3 * (green + yellow);
+    intersections.emplace_back(id, name, green, yellow, red);
+    std::cout << "\nAdded '" << name << "' (ID: " << id << ").\n";
 }
 
-// TODO: Remove intersection by ID
 void Admin::removeIntersection(std::vector<Intersection>& intersections) {
-    // TODO: Implement remove intersection
+    // Now handled in manageIntersections
 }
 
-// TODO: Configure timing for an intersection
+void Admin::viewAndEditIntersection(std::vector<Intersection>& intersections,
+                                     std::vector<Operator>& operators) {
+    // Now handled in manageIntersections
+}
+
 void Admin::configureIntersection(std::vector<Intersection>& intersections) {
-    // TODO: Implement configure timing
+    // Now handled in manageIntersections
 }
 
-// TODO: Assign operator to intersection
 void Admin::assignOperatorToIntersection(std::vector<Intersection>& intersections,
                                          std::vector<Operator>& operators) {
-    // TODO: Implement assign operator
+    // Now handled in manageIntersections
 }
 
-// TODO: View all activity logs
 void Admin::viewAllLogs() {
-    // TODO: Call Logger::getInstance().displayLogs()
+    Logger::getInstance().displayLogs();
 }
 
-// TODO: List all intersections
 void Admin::listIntersections(const std::vector<Intersection>& intersections) {
-    // TODO: Display all intersections with their settings
+    // Now handled in manageIntersections
 }
