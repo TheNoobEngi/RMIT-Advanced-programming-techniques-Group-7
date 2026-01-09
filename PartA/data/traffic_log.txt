@@ -210,6 +210,29 @@
 19:17:23,Nguyen Van Linh,North,YELLOW,AUTO
 19:17:28,Nguyen Van Linh,North,RED,AUTO
 19:17:28,Nguyen Van Linh,South,GREEN,AUTO
+14:26:57,Nguyen Van Linh,North,GREEN,AUTO
+14:26:57,District 7 Junction,North,GREEN,AUTO
+14:26:57,Le Loi Street,North,GREEN,AUTO
+13:10:48,Nguyen Van Linh,North,GREEN,AUTO
+13:10:48,District 7 Junction,North,GREEN,AUTO
+13:10:48,Le Loi Street,North,GREEN,AUTO
+13:12:28,Le Loi Street,North,YELLOW,AUTO
+13:12:31,Le Loi Street,North,RED,AUTO
+13:12:31,Le Loi Street,South,GREEN,AUTO
+13:13:02,Le Loi Street,South,YELLOW,AUTO
+13:13:05,Le Loi Street,South,RED,AUTO
+13:13:05,Le Loi Street,East,GREEN,AUTO
+13:16:04,Nguyen Van Linh,North,GREEN,AUTO
+13:16:04,District 7 Junction,North,GREEN,AUTO
+13:16:04,Le Loi Street,North,GREEN,AUTO
+13:27:37,Chang Chao-Yuan,North,GREEN,AUTO
+13:31:54,Nguyen Van Linh,North,GREEN,AUTO
+13:31:54,District 7 Junction,North,GREEN,AUTO
+13:31:54,Le Loi Street,North,GREEN,AUTO
+13:37:14,Nguyen Van Linh,North,GREEN,AUTO
+13:37:14,District 7 Junction,North,GREEN,AUTO
+13:37:14,Le Loi Street,North,GREEN,AUTO
+13:38:24,Chang Chao-Yuan,North,GREEN,AUTO
 14:02:06,Nguyen Van Linh,North,GREEN,AUTO
 14:02:06,District 7 Junction,North,GREEN,AUTO
 14:02:06,Le Loi Street,North,GREEN,AUTO

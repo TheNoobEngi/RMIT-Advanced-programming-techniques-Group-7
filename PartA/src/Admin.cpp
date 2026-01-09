@@ -40,18 +40,20 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                       << std::setw(22) << "Name" << " | "
                       << std::setw(4) << "G" << " | "
                       << std::setw(4) << "Y" << " | "
+                      << std::setw(4) << "R" << " | "
                       << "Operator\n";
-            std::cout << std::string(60, '-') << "\n";
+            std::cout << std::string(68, '-') << "\n";
             
             for (const auto& i : intersections) {
                 std::cout << std::setw(8) << i.getId() << " | "
                           << std::setw(22) << i.getName() << " | "
                           << std::setw(4) << i.getGreenDuration() << " | "
                           << std::setw(4) << i.getYellowDuration() << " | "
+                          << std::setw(4) << i.getRedDuration() << " | "
                           << (i.getAssignedOperator().empty() ? "None" : i.getAssignedOperator())
                           << "\n";
             }
-            std::cout << std::string(60, '=') << "\n";
+            std::cout << std::string(68, '=') << "\n";
         }
         
         std::cout << "\n[A] Add Intersection  [Q] Back to Menu\n";
@@ -90,7 +92,8 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
         // Show intersection details and options
         std::cout << "\n--- " << target->getName() << " (" << target->getId() << ") ---\n";
         std::cout << "Timings: Green=" << target->getGreenDuration() 
-                  << "s, Yellow=" << target->getYellowDuration() << "s\n";
+                  << "s, Yellow=" << target->getYellowDuration() 
+                  << "s, Red=" << target->getRedDuration() << "s\n";
         std::cout << "Operator: " << (target->getAssignedOperator().empty() ? "None" : target->getAssignedOperator()) << "\n";
         
         std::cout << "\n1. Edit Timings\n";
@@ -109,18 +112,20 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
         switch (choice) {
             case 1: {
                 // Edit timings
-                int green, yellow;
+                int green, yellow, red;
                 std::cout << "\nEnter new Green duration (seconds): ";
                 std::cin >> green;
                 std::cout << "Enter new Yellow duration (seconds): ";
                 std::cin >> yellow;
+                std::cout << "Enter new Red duration (seconds, 0 for auto): ";
+                std::cin >> red;
                 
                 if (green > 0 && yellow > 0) {
-                    int red = 3 * (green + yellow);
+                    if (red <= 0) red = 3 * (green + yellow);
                     target->setDurations(green, yellow, red);
-                    std::cout << "Success! Timings updated.\n";
+                    std::cout << "Success! Timings updated (G=" << green << "s, Y=" << yellow << "s, R=" << red << "s).\n";
                 } else {
-                    std::cout << "Error: Durations must be positive.\n";
+                    std::cout << "Error: Green and Yellow durations must be positive.\n";
                 }
                 pauseScreen();
                 break;
@@ -196,25 +201,26 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
 }
 
 void Admin::addIntersection(std::vector<Intersection>& intersections) {
-    std::string id, name;
-    int green, yellow;
+    std::string name;
+    int green, yellow, red;
     
     std::cout << "\n===== ADD NEW INTERSECTION =====\n";
     std::cout << "(Enter 'q' at any prompt to cancel)\n\n";
     
-    std::cout << "Enter Intersection ID (e.g., INT003): ";
-    std::cin >> id;
-    if (id == "q" || id == "Q") {
-        std::cout << "Cancelled.\n";
-        return;
-    }
-    
+    // Auto-generate intersection ID
+    int maxIdNum = 0;
     for (const auto& i : intersections) {
-        if (i.getId() == id) {
-            std::cout << "Error: ID '" << id << "' already exists!\n";
-            return;
+        std::string existingId = i.getId();
+        if (existingId.length() > 3 && existingId.substr(0, 3) == "INT") {
+            try {
+                int num = std::stoi(existingId.substr(3));
+                if (num > maxIdNum) maxIdNum = num;
+            } catch (...) {
+                // Skip non-numeric IDs
+            }
         }
     }
+    std::string id = "INT" + std::string(3 - std::to_string(maxIdNum + 1).length(), '0') + std::to_string(maxIdNum + 1);
     
     std::cin.ignore();
     std::cout << "Enter Name (or 'q' to cancel): ";
@@ -240,9 +246,19 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
     }
     if (yellow <= 0) yellow = 5;
     
-    int red = 3 * (green + yellow);
+    std::cout << "Red duration (seconds, default " << 3 * (green + yellow) << ", or -1 to cancel): ";
+    std::cin >> red;
+    if (red == -1) {
+        std::cout << "Cancelled.\n";
+        return;
+    }
+    if (red <= 0) red = 3 * (green + yellow);
+    
     intersections.emplace_back(id, name, green, yellow, red);
-    std::cout << "\nAdded '" << name << "' (ID: " << id << ").\n";
+    std::cout << "\nSuccessfully added intersection!\n";
+    std::cout << "  Name: " << name << "\n";
+    std::cout << "  ID: " << id << "\n";
+    std::cout << "  Timings: Green=" << green << "s, Yellow=" << yellow << "s, Red=" << red << "s\n";
 }
 
 void Admin::removeIntersection(std::vector<Intersection>& intersections) {
