@@ -210,3 +210,6 @@
 19:17:23,Nguyen Van Linh,North,YELLOW,AUTO
 19:17:28,Nguyen Van Linh,North,RED,AUTO
 19:17:28,Nguyen Van Linh,South,GREEN,AUTO
+14:26:57,Nguyen Van Linh,North,GREEN,AUTO
+14:26:57,District 7 Junction,North,GREEN,AUTO
+14:26:57,Le Loi Street,North,GREEN,AUTO
