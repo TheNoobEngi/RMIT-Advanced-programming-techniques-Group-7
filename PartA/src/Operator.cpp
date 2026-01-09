@@ -6,7 +6,7 @@
  */
 
 #include "Operator.h"
-#include <conio.h>  // For _kbhit() and _getch() on Windows
+#include "platform.h"  // Cross-platform keyboard input
 
 Operator::Operator() : User() {}
 
@@ -93,8 +93,8 @@ void Operator::monitorIntersection(Intersection& intersection) {
         }
         
         // Check for keyboard input (non-blocking)
-        if (_kbhit()) {
-            char key = _getch();
+        if (KBHIT()) {
+            char key = GETCH();
             
             switch (key) {
                 case 'q':

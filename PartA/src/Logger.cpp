@@ -4,7 +4,7 @@
  */
 
 #include "Logger.h"
-#include <conio.h>
+#include "platform.h"  // Cross-platform keyboard input
 
 Logger::Logger() : logFilePath("data/traffic_log.txt") {}
 
@@ -96,7 +96,7 @@ void Logger::displayLogs() {
         std::cout << "--------------------------------------------------------\n";
         
         // Wait for key press
-        char key = _getch();
+        char key = GETCH();
         
         switch (key) {
             case 'a':
