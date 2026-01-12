@@ -15,19 +15,19 @@ This group project integrates two C++ simulation modules demonstrating object-or
 ## Project Structure
 
 ```
-├── PartA/                       # Traffic Light Management System
+├── PartA/
 │   ├── include/
-│   │   ├── Utils.h              # Shared utilities & constants
-│   │   ├── TrafficLight.h       # Traffic light class
-│   │   ├── Intersection.h       # Intersection with 4 lights
-│   │   ├── User.h               # Abstract base user class
-│   │   ├── Operator.h           # Operator role
-│   │   ├── Admin.h              # Admin role
-│   │   ├── Logger.h             # Activity logging
-│   │   ├── FileManager.h        # Data persistence
-│   │   └── platform.h           # Cross-platform keyboard input
+│   │   ├── Utils.h
+│   │   ├── TrafficLight.h
+│   │   ├── Intersection.h
+│   │   ├── User.h
+│   │   ├── Operator.h
+│   │   ├── Admin.h
+│   │   ├── Logger.h
+│   │   ├── FileManager.h
+│   │   └── platform.h
 │   ├── src/
-│   │   ├── main.cpp             # Entry point
+│   │   ├── main.cpp
 │   │   ├── Utils.cpp
 │   │   ├── TrafficLight.cpp
 │   │   ├── Intersection.cpp
@@ -36,17 +36,22 @@ This group project integrates two C++ simulation modules demonstrating object-or
 │   │   ├── Admin.cpp
 │   │   ├── Logger.cpp
 │   │   └── FileManager.cpp
-│   └── data/                    # CSV files & logs
+│   ├── data/
+│   │   ├── traffic_log.txt
+│   │   └── intersections.csv
+│   │   └── users.csv
+│   └── traffic.exe
 │
-├── PartB/                       # Electric Motor Control
+├── PartB/
 │   ├── include/
-│   │   ├── MotorSimulator.h     # Interface to ousbMotorSim.exe
-│   │   ├── Logger.h             # CSV data logging
-│   │   └── FeedbackController.h # Closed-loop control
+│   │   ├── MotorSimulator.h
+│   │   ├── Logger.h
+│   │   └── FeedbackController.h
 │   ├── src/
-│   │   ├── main.cpp             # Entry point with menu
-│   │   └── ousbMotorSim.exe     # Motor simulator (provided)
-│   └── motor_log.csv            # Generated log file
+│   │   ├── main.cpp
+│   │   ├── motor_log.csv
+│   │   └── ousbMotorSim.exe
+│   └── motor.exe
 │
 └── README.md
 ```
