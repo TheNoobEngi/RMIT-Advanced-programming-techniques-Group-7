@@ -1,8 +1,6 @@
 /*
  * TrafficLight.cpp - Traffic Light class implementation
  * Part A: Traffic Light Management System
- * 
- * [MEMBER 2] - Operator Role, Traffic Light Control
  */
 
 #include "TrafficLight.h"

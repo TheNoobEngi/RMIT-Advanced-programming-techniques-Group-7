@@ -1,8 +1,6 @@
 /*
  * User.cpp - Base User class implementation
  * Part A: Traffic Light Management System
- * 
- * [SHARED] - Base class for Admin and Operator
  */
 
 #include "User.h"

@@ -2,7 +2,6 @@
  * Intersection.cpp - Intersection class implementation
  * Part A: Traffic Light Management System
  * 
- * [MEMBER 2] - Traffic Light Control
  * Key Logic: Only ONE direction can be GREEN at any time
  */
 

@@ -3,7 +3,6 @@
  * Part A: Traffic Light Management System
  * 
  * Demonstrates: INHERITANCE from User, POLYMORPHISM via virtual methods
- * [MEMBER 2] - Operator Role
  */
 
 #ifndef OPERATOR_H

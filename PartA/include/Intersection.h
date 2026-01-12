@@ -3,7 +3,6 @@
  * Part A: Traffic Light Management System
  * 
  * Demonstrates: COMPOSITION - contains 4 TrafficLight objects
- * [MEMBER 2] - Traffic Light Control
  */
 
 #ifndef INTERSECTION_H

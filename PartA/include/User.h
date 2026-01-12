@@ -3,7 +3,6 @@
  * Part A: Traffic Light Management System
  * 
  * Demonstrates: ABSTRACTION with pure virtual methods
- * [SHARED] - Base class for Admin and Operator
  */
 
 #ifndef USER_H
