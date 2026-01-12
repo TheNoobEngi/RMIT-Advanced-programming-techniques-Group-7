@@ -75,6 +75,10 @@ public:
 
         int pwm = motor.getPWM();
         if (pwm < 0) pwm = 50;  // Default starting PWM
+        
+        int lastADC = -1;
+        int stableCount = 0;
+        const int stableThreshold = 3;  // How many stable readings before considering settled
 
         for (int iteration = 1; iteration <= maxIterations; iteration++) {
             // Check for keyboard interrupt (Q to quit)
@@ -86,6 +90,15 @@ public:
                     return pwm;
                 }
             }
+
+            // Set PWM first, then wait for motor to respond
+            if (!motor.setPWM(pwm)) {
+                std::cerr << "\n[ERROR] Failed to set PWM! Communication error." << std::endl;
+                return -1;
+            }
+            
+            // Wait for ADC to stabilize (motor needs time to respond to PWM change)
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
             // Read ADC
             int adc = motor.readADC(0);
@@ -115,6 +128,24 @@ public:
                 std::cout << "========================================" << std::endl;
                 return pwm;
             }
+            
+            // Check if ADC is no longer changing (motor has settled but can't reach target)
+            if (adc == lastADC) {
+                stableCount++;
+                if (stableCount >= stableThreshold) {
+                    std::cout << "\n[INFO] Motor appears to have settled." << std::endl;
+                    std::cout << "ADC stable at " << adc << " for " << stableCount << " readings." << std::endl;
+                    
+                    // If at PWM limits and still can't reach target, stop
+                    if ((pwm >= 100 && error > 0) || (pwm <= 0 && error < 0)) {
+                        std::cout << "[WARNING] Cannot reach target - PWM at limit." << std::endl;
+                        break;
+                    }
+                }
+            } else {
+                stableCount = 0;
+            }
+            lastADC = adc;
 
             // Proportional control: adjust PWM based on error
             int adjustment = static_cast<int>(kp * error);
@@ -126,15 +157,6 @@ public:
             // Clamp PWM to valid range
             if (pwm > 100) pwm = 100;
             if (pwm < 0) pwm = 0;
-
-            // Send new PWM to motor
-            if (!motor.setPWM(pwm)) {
-                std::cerr << "\n[ERROR] Failed to set PWM! Communication error." << std::endl;
-                return -1;
-            }
-
-            // Small delay between iterations
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
         }
 
         std::cout << "\n[WARNING] Max iterations (" << maxIterations << ") reached without achieving target." << std::endl;

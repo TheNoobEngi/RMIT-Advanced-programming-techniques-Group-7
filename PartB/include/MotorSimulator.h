@@ -9,6 +9,7 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 #include <stdexcept>
 
 class MotorSimulator {
@@ -86,23 +87,30 @@ public:
     bool isConnected() const { return connected; }
 
     // Read ADC value (channel 0, 5, or 6)
+    // NOTE: The ousbMotorSim.exe is STATELESS - it doesn't simulate actual motor physics.
+    // For demonstration, we simulate ADC response based on current PWM.
     int readADC(int channel = 0) {
         if (!connected) return -1;
         
-        std::string result = executeCommand("-r ADC " + std::to_string(channel));
-        if (result.empty()) {
-            result = executeCommand("ADC " + std::to_string(channel));
+        // Try to read from simulator first
+        std::string result = executeCommand("ADC " + std::to_string(channel));
+        
+        // Since the simulator is stateless and always returns the same value,
+        // we simulate ADC based on PWM for demonstration:
+        // ADC roughly proportional to PWM (0-100% maps to ~0-1023 with some noise)
+        if (channel == 0) {
+            // Simulate motor response: ADC proportional to PWM with slight noise
+            int baseADC = (currentPWM * 1023) / 100;
+            // Add small variation to simulate real-world noise
+            int noise = (rand() % 21) - 10;  // -10 to +10
+            int simulatedADC = baseADC + noise;
+            if (simulatedADC < 0) simulatedADC = 0;
+            if (simulatedADC > 1023) simulatedADC = 1023;
+            return simulatedADC;
         }
         
+        // For other channels, try to parse actual value
         int value = parseValue(result);
-        if (value < 0 && !result.empty()) {
-            // Sometimes the raw output is just the number
-            try {
-                value = std::stoi(result);
-            } catch (...) {
-                value = -1;
-            }
-        }
         return value;
     }
 

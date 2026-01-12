@@ -29,7 +29,6 @@ void clearScreen() {
 void pauseScreen() {
     cout << "\nPress Enter to continue...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cin.get();
 }
 
 // Display main menu
