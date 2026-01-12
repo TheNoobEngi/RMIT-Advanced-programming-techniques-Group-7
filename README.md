@@ -40,7 +40,7 @@ This group project integrates two C++ simulation modules demonstrating object-or
 │   │   ├── traffic_log.txt
 │   │   └── intersections.csv
 │   │   └── users.csv
-│   └── traffic.exe
+│   └── traffic.exe               # Executable file
 │
 ├── PartB/
 │   ├── include/
@@ -51,7 +51,7 @@ This group project integrates two C++ simulation modules demonstrating object-or
 │   │   ├── main.cpp
 │   │   ├── motor_log.csv
 │   │   └── ousbMotorSim.exe
-│   └── motor.exe
+│   └── motor.exe                 # Executable file
 │
 └── README.md
 ```
