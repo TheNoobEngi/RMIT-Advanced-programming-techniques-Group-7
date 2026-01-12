@@ -33,14 +33,11 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 
 # debug information files
 *.dwo
-# Compiled executables
-*.exe
 
 # Simulator state files (created by ousbMotorSim.exe)
 p_ADC*.txt
