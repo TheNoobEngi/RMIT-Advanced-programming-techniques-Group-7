@@ -11,7 +11,6 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <conio.h>  // For _kbhit() and _getch()
 
 class FeedbackController {
 private:
@@ -69,8 +68,6 @@ public:
         std::cout << "Max Iterations = " << maxIterations << std::endl;
         std::cout << "Proportional Gain = " << kp << std::endl;
         std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Press [Q] at any time to stop early" << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
         std::cout << "Starting feedback control...\n" << std::endl;
 
         int pwm = motor.getPWM();
@@ -81,16 +78,6 @@ public:
         const int stableThreshold = 3;  // How many stable readings before considering settled
 
         for (int iteration = 1; iteration <= maxIterations; iteration++) {
-            // Check for keyboard interrupt (Q to quit)
-            if (_kbhit()) {
-                char key = _getch();
-                if (key == 'q' || key == 'Q') {
-                    std::cout << "\n[USER STOPPED] Control loop terminated by user." << std::endl;
-                    std::cout << "Final PWM = " << pwm << "%" << std::endl;
-                    return pwm;
-                }
-            }
-
             // Set PWM first, then wait for motor to respond
             if (!motor.setPWM(pwm)) {
                 std::cerr << "\n[ERROR] Failed to set PWM! Communication error." << std::endl;
@@ -166,4 +153,3 @@ public:
 };
 
 #endif // FEEDBACK_CONTROLLER_H
-
