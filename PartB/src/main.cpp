@@ -204,30 +204,23 @@ int main() {
             case 6: {
                 // Configure controller
                 cout << "\n--- CONTROLLER SETTINGS ---" << endl;
-                cout << "1. Target ADC:      " << controller.getTarget() << endl;
-                cout << "2. Error Threshold: +/-" << controller.getThreshold() << endl;
-                cout << "3. Proportional Gain (Kp): " << controller.getGain() << endl;
-                cout << "\nSelect setting to change (1-3, or 0 to cancel): ";
+                cout << "Target ADC: " << controller.getTarget() << endl;
+                cout << "1. Error Threshold: +/-" << controller.getThreshold() << endl;
+                cout << "2. Proportional Gain (Kp): " << controller.getGain() << endl;
+                cout << "\nSelect setting to change (1-2, or 0 to cancel): ";
                 
                 int setting;
                 cin >> setting;
                 
                 switch (setting) {
                     case 1: {
-                        cout << "Enter new target ADC (0-1023): ";
-                        int val;
-                        cin >> val;
-                        if (val >= 0 && val <= 1023) controller.setTarget(val);
-                        break;
-                    }
-                    case 2: {
                         cout << "Enter new error threshold: ";
                         int val;
                         cin >> val;
                         if (val > 0) controller.setThreshold(val);
                         break;
                     }
-                    case 3: {
+                    case 2: {
                         cout << "Enter new Kp gain (e.g., 0.1): ";
                         double val;
                         cin >> val;
