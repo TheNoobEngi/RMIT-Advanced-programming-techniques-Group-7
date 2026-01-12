@@ -39,3 +39,16 @@
 
 # debug information files
 *.dwo
+# Compiled executables
+*.exe
+
+# Simulator state files (created by ousbMotorSim.exe)
+p_ADC*.txt
+PWM*.txt
+PORTB.txt
+PORTD.txt
+PINC.txt
+
+# OS files
+.DS_Store
+Thumbs.db

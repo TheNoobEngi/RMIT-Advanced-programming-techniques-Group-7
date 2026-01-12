@@ -117,15 +117,14 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                 std::cin >> green;
                 std::cout << "Enter new Yellow duration (seconds): ";
                 std::cin >> yellow;
-                std::cout << "Enter new Red duration (seconds, 0 for auto): ";
+                std::cout << "Enter new Red duration (seconds): ";
                 std::cin >> red;
                 
-                if (green > 0 && yellow > 0) {
-                    if (red <= 0) red = 3 * (green + yellow);
+                if (green > 0 && yellow > 0 && red > 0) {
                     target->setDurations(green, yellow, red);
                     std::cout << "Success! Timings updated (G=" << green << "s, Y=" << yellow << "s, R=" << red << "s).\n";
                 } else {
-                    std::cout << "Error: Green and Yellow durations must be positive.\n";
+                    std::cout << "Error: Light durations must be positive.\n";
                 }
                 pauseScreen();
                 break;
@@ -205,8 +204,6 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
     int green, yellow, red;
     
     std::cout << "\n===== ADD NEW INTERSECTION =====\n";
-    std::cout << "(Enter 'q' at any prompt to cancel)\n\n";
-    
     // Auto-generate intersection ID
     int maxIdNum = 0;
     for (const auto& i : intersections) {
@@ -230,7 +227,8 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
         return;
     }
     
-    std::cout << "Green duration (seconds, default 30, or -1 to cancel): ";
+    std::cout << "Green duration (seconds)\n";
+    std::cout << "Enter (0) for default or (-1) to cancel:";
     std::cin >> green;
     if (green == -1) {
         std::cout << "Cancelled.\n";
@@ -238,7 +236,8 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
     }
     if (green <= 0) green = 30;
     
-    std::cout << "Yellow duration (seconds, default 5, or -1 to cancel): ";
+    std::cout << "Yellow duration (seconds)\n";
+    std::cout << "Enter (0) for default or (-1) to cancel:";
     std::cin >> yellow;
     if (yellow == -1) {
         std::cout << "Cancelled.\n";
@@ -246,13 +245,14 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
     }
     if (yellow <= 0) yellow = 5;
     
-    std::cout << "Red duration (seconds, default " << 3 * (green + yellow) << ", or -1 to cancel): ";
+    std::cout << "Red duration (seconds)\n";
+    std::cout << "Enter (0) for default or (-1) to cancel:";
     std::cin >> red;
     if (red == -1) {
         std::cout << "Cancelled.\n";
         return;
     }
-    if (red <= 0) red = 3 * (green + yellow);
+    if (red <= 0) red = 35;
     
     intersections.emplace_back(id, name, green, yellow, red);
     std::cout << "\nSuccessfully added intersection!\n";

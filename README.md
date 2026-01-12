@@ -24,7 +24,8 @@ This group project integrates two C++ simulation modules demonstrating object-or
 │   │   ├── Operator.h           # Operator role
 │   │   ├── Admin.h              # Admin role
 │   │   ├── Logger.h             # Activity logging
-│   │   └── FileManager.h        # Data persistence
+│   │   ├── FileManager.h        # Data persistence
+│   │   └── platform.h           # Cross-platform keyboard input
 │   ├── src/
 │   │   ├── main.cpp             # Entry point
 │   │   ├── Utils.cpp
@@ -39,9 +40,13 @@ This group project integrates two C++ simulation modules demonstrating object-or
 │
 ├── PartB/                       # Electric Motor Control
 │   ├── include/
+│   │   ├── MotorSimulator.h     # Interface to ousbMotorSim.exe
+│   │   ├── Logger.h             # CSV data logging
+│   │   └── FeedbackController.h # Closed-loop control
 │   ├── src/
-│   │   └── main.cpp
-│   └── data/
+│   │   ├── main.cpp             # Entry point with menu
+│   │   └── ousbMotorSim.exe     # Motor simulator (provided)
+│   └── motor_log.csv            # Generated log file
 │
 └── README.md
 ```
@@ -72,11 +77,12 @@ A console-based application that simulates a multi-intersection traffic light ma
 A console-based program that interacts with a motor simulator (ousbMotorSim.exe) to control motor speed through PWM and implement closed-loop control.
 
 ### Features
-- **PWM Control:** Set/modify frequency and duty cycle
-- **ADC Feedback:** Read analog sensor values
-- **Feedback Loop:** Auto-adjust PWM to maintain target ADC
-- **Data Logging:** Log PWM, ADC, and error values
+- **PWM Control:** Set/modify frequency and duty cycle (0-100%)
+- **ADC Feedback:** Read analog sensor values (channels 0, 5, 6)
+- **Feedback Loop:** Auto-adjust PWM to maintain target ADC value
+- **Data Logging:** Log timestamp, PWM, ADC, and error to CSV
 - **Exception Handling:** Graceful simulator failure handling
+- **Early Exit:** Press Q during feedback loop to stop early
 
 ### Team Responsibilities
 | Member | Focus Areas |
@@ -98,17 +104,16 @@ A console-based program that interacts with a motor simulator (ousbMotorSim.exe)
 ## How to Compile
 
 ```bash
-# Part A - compile and output to PartA folder
-g++ -o PartA/traffic.exe -IPartA/include PartA/src/*.cpp
-
-# Part B
-g++ -o PartB/motor.exe PartB/src/main.cpp
-```
-
-To run Part A:
-```bash
+# Part A - compile and run from PartA folder
 cd PartA
+g++ -o traffic.exe -Iinclude src/*.cpp
 ./traffic.exe
+
+# Part B - compile and run from PartB folder
+cd PartB
+g++ -o motor.exe -Iinclude src/main.cpp
+cd src
+../motor.exe
 ```
 
 ---

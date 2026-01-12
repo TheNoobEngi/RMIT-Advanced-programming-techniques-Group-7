@@ -83,8 +83,10 @@ void Operator::monitorIntersection(Intersection& intersection) {
         std::cout << "  CONTROLS:\n";
         std::cout << "  [Q] Exit monitoring\n";
         std::cout << "  [M] Toggle Mode (AUTO/MANUAL)\n";
-        std::cout << "  [R] Reset timer (restart countdown)\n";
-        std::cout << "  [0-3] Override light (0=North, 1=South, 2=East, 3=West)\n";
+        if (!intersection.isAutoMode()) {
+            std::cout << "  [R] Reset timer (restart countdown)\n";
+            std::cout << "  [0-3] Override light (0=North, 1=South, 2=East, 3=West)\n";
+        }
         std::cout << "------------------------------------------------------------\n";
         
         // Tick the intersection if in AUTO mode
@@ -112,34 +114,25 @@ void Operator::monitorIntersection(Intersection& intersection) {
                     
                 case 'r':
                 case 'R':
-                    intersection.resetTimer();
-                    std::cout << "\nTimer reset!\n";
-                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                    if (!intersection.isAutoMode()) {
+                        intersection.resetTimer();
+                        std::cout << "\nTimer reset!\n";
+                        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                    }
                     break;
                     
                 case '0':
                 case '1':
                 case '2':
                 case '3': {
-                    int direction = key - '0';
-                    
-                    // Remember current mode
-                    bool wasAuto = intersection.isAutoMode();
-                    
-                    // Temporarily switch to manual if needed
-                    if (wasAuto) {
-                        intersection.setAutoMode(false);
+                    if (intersection.isAutoMode()) {
+                        std::cout << "\nCannot override in AUTO mode. Press [M] to switch to MANUAL first.\n";
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                    } else {
+                        int direction = key - '0';
+                        intersection.manualOverride(direction);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     }
-                    
-                    // Perform the override
-                    intersection.manualOverride(direction);
-                    
-                    // Restore original mode
-                    if (wasAuto) {
-                        intersection.setAutoMode(true);
-                    }
-                    
-                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     break;
                 }
                     
