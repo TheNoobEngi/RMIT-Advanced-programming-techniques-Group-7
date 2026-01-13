@@ -87,7 +87,6 @@ A console-based program that interacts with a motor simulator (ousbMotorSim.exe)
 - **Feedback Loop:** Auto-adjust PWM to maintain target ADC value
 - **Data Logging:** Log timestamp, PWM, ADC, and error to CSV
 - **Exception Handling:** Graceful simulator failure handling
-- **Early Exit:** Press Q during feedback loop to stop early
 
 ### Team Responsibilities
 | Member | Focus Areas |
