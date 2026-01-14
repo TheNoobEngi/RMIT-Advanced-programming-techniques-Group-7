@@ -26,14 +26,8 @@ public:
     void manageIntersections(std::vector<Intersection>& intersections,
                               std::vector<Operator>& operators);
     void addIntersection(std::vector<Intersection>& intersections);
-    void removeIntersection(std::vector<Intersection>& intersections);
-    void viewAndEditIntersection(std::vector<Intersection>& intersections,
-                                  std::vector<Operator>& operators);
-    void configureIntersection(std::vector<Intersection>& intersections);
-    void assignOperatorToIntersection(std::vector<Intersection>& intersections,
-                                      std::vector<Operator>& operators);
     void viewAllLogs();
-    void listIntersections(const std::vector<Intersection>& intersections);
 };
 
 #endif
+

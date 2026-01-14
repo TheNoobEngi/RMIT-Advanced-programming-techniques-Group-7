@@ -105,7 +105,6 @@ void Intersection::tick() {
 // MODE CONTROL
 void Intersection::toggleMode() {
     autoMode = !autoMode;
-    std::cout << "Mode switched to: " << (autoMode ? "AUTO" : "MANUAL") << "\n";
 }
 
 void Intersection::setAutoMode(bool mode) {
@@ -115,7 +114,6 @@ void Intersection::setAutoMode(bool mode) {
 // Reset timer to green duration
 void Intersection::resetTimer() {
     countdown = greenDuration;
-    std::cout << "Timer reset to " << greenDuration << " seconds.\n";
 }
 
 // MANUAL OVERRIDE

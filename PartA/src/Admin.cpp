@@ -261,28 +261,7 @@ void Admin::addIntersection(std::vector<Intersection>& intersections) {
     std::cout << "  Timings: Green=" << green << "s, Yellow=" << yellow << "s, Red=" << red << "s\n";
 }
 
-void Admin::removeIntersection(std::vector<Intersection>& intersections) {
-    // Now handled in manageIntersections
-}
-
-void Admin::viewAndEditIntersection(std::vector<Intersection>& intersections,
-                                     std::vector<Operator>& operators) {
-    // Now handled in manageIntersections
-}
-
-void Admin::configureIntersection(std::vector<Intersection>& intersections) {
-    // Now handled in manageIntersections
-}
-
-void Admin::assignOperatorToIntersection(std::vector<Intersection>& intersections,
-                                         std::vector<Operator>& operators) {
-    // Now handled in manageIntersections
-}
-
 void Admin::viewAllLogs() {
     Logger::getInstance().displayLogs();
 }
 
-void Admin::listIntersections(const std::vector<Intersection>& intersections) {
-    // Now handled in manageIntersections
-}

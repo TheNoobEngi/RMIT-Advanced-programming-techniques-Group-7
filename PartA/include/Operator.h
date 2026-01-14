@@ -30,8 +30,6 @@ public:
     
     void viewAssignedIntersections(const std::vector<Intersection>& allIntersections);
     void monitorIntersection(Intersection& intersection);
-    void switchMode(Intersection& intersection);
-    void performOverride(Intersection& intersection);
 };
 
 #endif
