@@ -47,6 +47,7 @@ void Intersection::setDurations(int green, int yellow, int red) {
     greenDuration = green;
     yellowDuration = yellow;
     redDuration = red;
+    countdown = green;  // Reset countdown to new green duration
 }
 void Intersection::assignOperator(const std::string& opId) { assignedOperatorId = opId; }
 

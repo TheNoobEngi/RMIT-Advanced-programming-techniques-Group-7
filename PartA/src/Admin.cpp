@@ -96,14 +96,15 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                   << "s, Red=" << target->getRedDuration() << "s\n";
         std::cout << "Operator: " << (target->getAssignedOperator().empty() ? "None" : target->getAssignedOperator()) << "\n";
         
-        std::cout << "\n1. Edit Timings\n";
+        std::cout << "\n1. Edit Name\n";
+        std::cout << "2. Edit Timings\n";
         if (target->getAssignedOperator().empty()) {
-            std::cout << "2. Assign Operator\n";
+            std::cout << "3. Assign Operator\n";
         } else {
-            std::cout << "2. Remove Operator\n";
+            std::cout << "3. Remove Operator\n";
         }
-        std::cout << "3. Delete Intersection\n";
-        std::cout << "4. Cancel\n";
+        std::cout << "4. Delete Intersection\n";
+        std::cout << "5. Cancel\n";
         std::cout << "Choice: ";
         
         int choice;
@@ -111,6 +112,20 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
         
         switch (choice) {
             case 1: {
+                // Edit name
+                std::cin.ignore();
+                std::cout << "\nCurrent name: " << target->getName() << "\n";
+                std::cout << "Enter new name: ";
+                std::string newName;
+                std::getline(std::cin, newName);
+                if (!newName.empty()) {
+                    target->setName(newName);
+                    std::cout << "Name updated to: " << newName << "\n";
+                }
+                pauseScreen();
+                break;
+            }
+            case 2: {
                 // Edit timings
                 int green, yellow, red;
                 std::cout << "\nEnter new Green duration (seconds): ";
@@ -129,7 +144,7 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                 pauseScreen();
                 break;
             }
-            case 2: {
+            case 3: {
                 if (target->getAssignedOperator().empty()) {
                     // Assign operator
                     if (operators.empty()) {
@@ -173,7 +188,7 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                 pauseScreen();
                 break;
             }
-            case 3: {
+            case 4: {
                 // Delete intersection
                 std::cout << "\nAre you sure you want to delete '" << target->getName() << "'? (y/n): ";
                 char confirm;
@@ -192,7 +207,7 @@ void Admin::manageIntersections(std::vector<Intersection>& intersections,
                 pauseScreen();
                 break;
             }
-            case 4:
+            case 5:
             default:
                 break;
         }
